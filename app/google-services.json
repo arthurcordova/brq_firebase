@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "231264564299",
+    "project_id": "projeto-teste-f3c53",
+    "storage_bucket": "projeto-teste-f3c53.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:231264564299:android:ca8418ad1d965de9a4c9ce",
+        "android_client_info": {
+          "package_name": "com.mobwaysolutions.firebasetest"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "231264564299-vv2or68civ1d7k4c1aacm60smheb57eu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAI8PipMDj5lYSu3DERhzKnPyjSq6A7k4c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "231264564299-vv2or68civ1d7k4c1aacm60smheb57eu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
