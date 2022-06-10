@@ -9,15 +9,16 @@ import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.mobwaysolutions.firebasetest.model.Pessoa
+import com.mobwaysolutions.firebasetest.model.PessoaClicavel
 import com.mobwaysolutions.firebasetest.model.PessoasAdapter
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), PessoaClicavel {
 
     lateinit var buttonSave: Button
     lateinit var tilNome: TextInputLayout
     lateinit var tilSobrenome: TextInputLayout
     lateinit var rvListaPessoas: RecyclerView
-    private val pessoaAdapter = PessoasAdapter()
+    private val pessoaAdapter = PessoasAdapter(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,6 +58,7 @@ class MainActivity : AppCompatActivity() {
             return null
         }
         return Pessoa(
+            null,
             nome = tilNome.editText?.text.toString(),
             sobrenome = tilSobrenome.editText?.text.toString()
         )
@@ -96,6 +98,23 @@ class MainActivity : AppCompatActivity() {
             }
             .addOnFailureListener { exception ->
                 println("Error getting documents.")
+            }
+    }
+
+    /**
+     * Vamos chamar uma nova tela e passar por parametro a pessoa
+     */
+    override fun onClickEdit(pessoa: Pessoa) {
+
+    }
+
+    /**
+     * Vamos remover da lista
+     */
+    override fun onClickDelete(pessoa: Pessoa) {
+        Firebase.firestore.collection("meus_usuarios").document(pessoa.id ?: "" ).delete()
+            .addOnSuccessListener {
+                fetchDataFromFirebase()
             }
     }
 }

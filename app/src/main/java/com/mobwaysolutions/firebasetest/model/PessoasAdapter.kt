@@ -5,7 +5,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.mobwaysolutions.firebasetest.R
 
-class PessoasAdapter : RecyclerView.Adapter<PessoasViewHolder>() {
+class PessoasAdapter(private val interfaceClicavel: PessoaClicavel) :
+    RecyclerView.Adapter<PessoasViewHolder>() {
 
     val listaDePessoas: MutableList<Pessoa> = mutableListOf()
 
@@ -18,13 +19,15 @@ class PessoasAdapter : RecyclerView.Adapter<PessoasViewHolder>() {
     override fun onBindViewHolder(holder: PessoasViewHolder, position: Int) {
         val pessoaSelecionada = listaDePessoas[position]
         holder.preencher(pessoaSelecionada)
+        holder.ivEdit.setOnClickListener { interfaceClicavel.onClickEdit(pessoaSelecionada) }
+        holder.ivDelete.setOnClickListener { interfaceClicavel.onClickDelete(pessoaSelecionada) }
     }
 
     override fun getItemCount(): Int {
         return listaDePessoas.size
     }
 
-    fun atualizarLista(novaLista : List<Pessoa>) {
+    fun atualizarLista(novaLista: List<Pessoa>) {
         listaDePessoas.clear()
         listaDePessoas.addAll(novaLista)
         notifyDataSetChanged()
