@@ -1,5 +1,6 @@
 package com.mobwaysolutions.firebasetest
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
@@ -35,7 +36,10 @@ class MainActivity : AppCompatActivity(), PessoaClicavel {
                 tilSobrenome.error = "Por favor preencha o campo"
             }
         }
+    }
 
+    override fun onResume() {
+        super.onResume()
         fetchDataFromFirebase()
     }
 
@@ -105,14 +109,18 @@ class MainActivity : AppCompatActivity(), PessoaClicavel {
      * Vamos chamar uma nova tela e passar por parametro a pessoa
      */
     override fun onClickEdit(pessoa: Pessoa) {
-
+        val intentDetalhes = Intent(this, DetalhesActivity::class.java)
+        intentDetalhes.putExtra("pessoa_param", pessoa)
+        startActivity(intentDetalhes)
     }
 
     /**
      * Vamos remover da lista
      */
     override fun onClickDelete(pessoa: Pessoa) {
-        Firebase.firestore.collection("meus_usuarios").document(pessoa.id ?: "" ).delete()
+        Firebase.firestore
+            .collection("meus_usuarios")
+            .document(pessoa.id ?: "" ).delete()
             .addOnSuccessListener {
                 fetchDataFromFirebase()
             }

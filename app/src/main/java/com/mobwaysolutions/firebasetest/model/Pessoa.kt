@@ -3,7 +3,7 @@ package com.mobwaysolutions.firebasetest.model
 import com.google.firebase.firestore.QueryDocumentSnapshot
 import java.io.Serializable
 
-data class Pessoa(val id: String?, val nome: String, val sobrenome: String) : Serializable {
+data class Pessoa(val id: String?, var nome: String, var sobrenome: String) : Serializable {
 
     companion object {
 
