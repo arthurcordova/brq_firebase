@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.FirebaseUser
 
-class CadastroUsuarioViewModel : ViewModel() {
+class AuthenticationUsuarioViewModel : ViewModel() {
 
     private val authenticationRepository = AuthenticationRepository()
 
@@ -12,6 +12,12 @@ class CadastroUsuarioViewModel : ViewModel() {
 
     fun criarUsuario(email: String, senha: String) {
         authenticationRepository.createUser(email, senha) { firebaseUser, e ->
+            resultState.value = firebaseUser
+        }
+    }
+
+    fun login(email: String, senha: String) {
+        authenticationRepository.signInWithEmail(email, senha) { firebaseUser, e ->
             resultState.value = firebaseUser
         }
     }

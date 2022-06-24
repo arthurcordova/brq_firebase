@@ -7,8 +7,7 @@ import android.widget.Button
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.textfield.TextInputLayout
 
-class CadastroUsuarioActivity : AppCompatActivity() {
-
+class LoginUsuarioActivity : AppCompatActivity() {
     private lateinit var viewModel: AuthenticationUsuarioViewModel
     private lateinit var tilEmail: TextInputLayout
     private lateinit var tilSenha: TextInputLayout
@@ -16,11 +15,11 @@ class CadastroUsuarioActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_cadastro_usuario)
+        setContentView(R.layout.activity_login_usuario)
+
         viewModel = ViewModelProvider(this)[AuthenticationUsuarioViewModel::class.java]
 
         initComponents()
-
         bSave.setOnClickListener {
             tilSenha.error = null
             viewModel.criarUsuario(
@@ -37,12 +36,13 @@ class CadastroUsuarioActivity : AppCompatActivity() {
             if (it == null) {
                 tilSenha.error = "Usuário ou senha inválidos."
             } else {
-                Intent(this, LoginUsuarioActivity::class.java).let {
+                Intent(this, MainActivity::class.java).let {
                     startActivity(it)
                 }
             }
         }
     }
+
 
     private fun initComponents() {
         tilEmail = findViewById(R.id.tilEmail)

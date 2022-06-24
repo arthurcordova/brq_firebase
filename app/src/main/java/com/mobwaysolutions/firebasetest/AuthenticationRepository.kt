@@ -17,4 +17,20 @@ class AuthenticationRepository {
             }
     }
 
+    fun signInWithEmail(
+        email: String,
+        senha: String,
+        onResult: (FirebaseUser?, Exception?) -> Unit
+    ) {
+        FirebaseAuth
+            .getInstance()
+            .signInWithEmailAndPassword(email, senha)
+            .addOnSuccessListener { authResult ->
+                onResult.invoke(authResult.user, null)
+            }
+            .addOnFailureListener {
+                onResult.invoke(null, it)
+            }
+    }
+
 }
