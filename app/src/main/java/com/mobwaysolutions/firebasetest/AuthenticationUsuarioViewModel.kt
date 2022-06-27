@@ -11,8 +11,10 @@ class AuthenticationUsuarioViewModel : ViewModel() {
     val resultState = MutableLiveData<FirebaseUser?>()
 
     fun criarUsuario(email: String, senha: String) {
-        authenticationRepository.createUser(email, senha) { firebaseUser, e ->
-            resultState.value = firebaseUser
+        if (email.isNotEmpty() && senha.isNotEmpty()) {
+            authenticationRepository.createUser(email, senha) { firebaseUser, e ->
+                resultState.value = firebaseUser
+            }
         }
     }
 
