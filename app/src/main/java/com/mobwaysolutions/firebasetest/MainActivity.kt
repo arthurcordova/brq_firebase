@@ -9,6 +9,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.mobwaysolutions.firebasetest.database.UserRepository
+import com.mobwaysolutions.firebasetest.database.entity.UserLocalEntity
 import com.mobwaysolutions.firebasetest.model.Pessoa
 import com.mobwaysolutions.firebasetest.model.PessoaClicavel
 import com.mobwaysolutions.firebasetest.model.PessoasAdapter
@@ -20,10 +22,15 @@ class MainActivity : AppCompatActivity(), PessoaClicavel {
     lateinit var tilSobrenome: TextInputLayout
     lateinit var rvListaPessoas: RecyclerView
     private val pessoaAdapter = PessoasAdapter(this)
+    lateinit var userRepository : UserRepository
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        userRepository = UserRepository(this)
+
         carregarComponentes()
         configurarRecyclerView()
 
@@ -97,6 +104,10 @@ class MainActivity : AppCompatActivity(), PessoaClicavel {
                 for (document in result) {
                     novaLista.add(Pessoa.convertFromFBToModel(document))
                 }
+
+                val novaListaUsers = novaLista.map { UserLocalEntity.convertPessoaToUserLocalEntity(it) }
+                userRepository.insert(novaListaUsers)
+
                 // Atualizar nossa recyclerview
                 pessoaAdapter.atualizarLista(novaLista)
             }

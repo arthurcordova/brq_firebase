@@ -2,18 +2,48 @@ package com.mobwaysolutions.firebasetest
 
 import android.content.Context
 
-class UserPreferences(context: Context) {
+class UserPreferences<T>(context: Context) : UserPreferenceActions {
 
     private val sharedPref = context.getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
 
-    fun save(email: String) {
-        sharedPref.edit().apply {
-            putString("user_email", email)
-        }.apply()
+    fun save(key: SharedPrefKeys, valor: T) {
+        when (valor) {
+            is String -> {
+                sharedPref.edit().apply {
+                    putString(key.nomeChave, valor)
+                }.apply()
+            }
+            is Int -> {
+                sharedPref.edit().apply {
+                    putInt(key.nomeChave, valor)
+                }.apply()
+            }
+            is Boolean -> {
+                sharedPref.edit().apply {
+                    putBoolean(key.nomeChave, valor)
+                }.apply()
+            }
+        }
     }
 
-    fun getSavedEmail(): String? {
-        return sharedPref.getString("user_email", "e-mail não encontrado")
+    override fun getByKeyString(key: SharedPrefKeys): String? {
+        return sharedPref.getString(key.nomeChave, "")
+    }
+
+    override fun getByKeyInt(key: SharedPrefKeys): Int {
+        return sharedPref.getInt(key.nomeChave, 0)
+    }
+
+    override fun getByKeyBoolean(key: SharedPrefKeys): Boolean {
+        return sharedPref.getBoolean(key.nomeChave, false)
     }
 
 }
+
+enum class SharedPrefKeys(val nomeChave : String) {
+
+    EMAIL("user_email"),
+    SENHA("user_password")
+
+}
+

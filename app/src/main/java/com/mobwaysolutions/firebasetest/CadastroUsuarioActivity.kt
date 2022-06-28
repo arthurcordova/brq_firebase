@@ -13,7 +13,7 @@ class CadastroUsuarioActivity : AppCompatActivity() {
     private lateinit var tilEmail: TextInputLayout
     private lateinit var tilSenha: TextInputLayout
     private lateinit var bSave: Button
-    private lateinit var userPreferences: UserPreferences
+    private lateinit var userPreferences: UserPreferences<String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,14 +25,15 @@ class CadastroUsuarioActivity : AppCompatActivity() {
         bSave.setOnClickListener {
             tilSenha.error = null
 
-            userPreferences.save(tilEmail.editText?.text.toString())
+            userPreferences.save(SharedPrefKeys.SENHA, tilEmail.editText?.text.toString())
+
             viewModel.criarUsuario(
                 tilEmail.editText?.text.toString(),
                 tilSenha.editText?.text.toString()
             )
         }
         userPreferences = UserPreferences(this)
-        tilEmail.editText?.setText(userPreferences.getSavedEmail())
+        tilEmail.editText?.setText(userPreferences.getByKeyString(SharedPrefKeys.SENHA))
 
         initObservers()
     }
