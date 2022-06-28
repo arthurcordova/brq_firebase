@@ -9,7 +9,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import com.mobwaysolutions.firebasetest.database.UserRepository
+import com.mobwaysolutions.firebasetest.database.DefaultRepository
+import com.mobwaysolutions.firebasetest.database.UserRepositoryImpl
 import com.mobwaysolutions.firebasetest.database.entity.UserLocalEntity
 import com.mobwaysolutions.firebasetest.model.Pessoa
 import com.mobwaysolutions.firebasetest.model.PessoaClicavel
@@ -22,14 +23,14 @@ class MainActivity : AppCompatActivity(), PessoaClicavel {
     lateinit var tilSobrenome: TextInputLayout
     lateinit var rvListaPessoas: RecyclerView
     private val pessoaAdapter = PessoasAdapter(this)
-    lateinit var userRepository : UserRepository
+    lateinit var userRepositoryImpl : DefaultRepository<UserLocalEntity>
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        userRepository = UserRepository(this)
+        userRepositoryImpl = UserRepositoryImpl(this)
 
         carregarComponentes()
         configurarRecyclerView()
@@ -106,7 +107,7 @@ class MainActivity : AppCompatActivity(), PessoaClicavel {
                 }
 
                 val novaListaUsers = novaLista.map { UserLocalEntity.convertPessoaToUserLocalEntity(it) }
-                userRepository.insert(novaListaUsers)
+                userRepositoryImpl.insert(novaListaUsers)
 
                 // Atualizar nossa recyclerview
                 pessoaAdapter.atualizarLista(novaLista)
@@ -133,6 +134,7 @@ class MainActivity : AppCompatActivity(), PessoaClicavel {
             .collection("meus_usuarios")
             .document(pessoa.id ?: "" ).delete()
             .addOnSuccessListener {
+                userRepositoryImpl.delete( UserLocalEntity.convertPessoaToUserLocalEntity(pessoa) )
                 fetchDataFromFirebase()
             }
     }
